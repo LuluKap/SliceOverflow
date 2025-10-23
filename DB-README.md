@@ -1,34 +1,158 @@
-Setup Instructions
-1. Clone the repository
-git clone https://github.com/LuluKap/SliceOverflow.git
-cd SliceOverflow
+Here’s a clean teammate-only setup guide you can paste straight into your repo as **README-Setup.md** (no emojis, no fluff):
 
-2. Install MySQL
+---
 
-Make sure you have MySQL Server 8+ and MySQL Workbench installed.
+# Team Setup Instructions – Slice Overflow System
 
-3. Import the database schema
+## 1. Required Software
 
-We included a schema file: pizza_schema.sql
+Everyone must install the same tools and versions.
 
-In MySQL Workbench:
+| Tool                       | Version                               | Notes                                     |
+| -------------------------- | ------------------------------------- | ----------------------------------------- |
+| JDK                        | 17                                    | Verify with `java -version`               |
+| Maven                      | 3.9+                                  | Verify with `mvn -v`                      |
+| MySQL Server and Workbench | 8.0+                                  | Install using MySQL Installer for Windows |
+| IDE                        | IntelliJ IDEA Community (recommended) | Detects Maven automatically               |
 
-Open a connection to localhost
+---
 
-Go to File → Open SQL Script
+## 2. Clone the Repository
 
-Select pizza_schema.sql
+```bash
+git clone https://github.com/<your-team-name>/SliceOverflowSystem.git
+cd SliceOverflowSystem
+```
 
-Run the script (⚡ lightning bolt)
+Verify that your structure looks like this:
 
-4. Configure database connection in Java
+```
+SliceOverflowSystem/
+├── pom.xml
+├── src/
+│   ├── main/
+│   │   ├── java/pizza/shop/...
+│   │   └── resources/db/pizza_schema.sql
+└── README-Setup.md
+```
 
-Inside the project’s code, update your database credentials:
+---
 
-String url = "jdbc:mysql://localhost:3306/PizzaShop";
-String user = "root";      // your MySQL username
-String password = "yourpassword"; 
+## 3. Set Up the Database
 
-5. Run the project
+1. Open MySQL Workbench.
+2. Make sure the **MySQL80** service is running.
+3. Open a new SQL tab and execute:
 
-Open in IntelliJ, build with Maven, and run the program.
+   ```sql
+   SOURCE src/main/resources/db/pizza_schema.sql;
+   ```
+
+   or copy the contents of that file and run them manually.
+4. Verify:
+
+   ```sql
+   USE PizzaShop;
+   SHOW TABLES;
+   SELECT * FROM Customers;
+   ```
+
+---
+
+## 4. Configure Database Credentials
+
+Edit `src/main/java/pizza/shop/db/DBConnection.java` and confirm:
+
+```java
+private static final String URL =
+    "jdbc:mysql://127.0.0.1:3306/PizzaShop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+private static final String USER = "root";
+private static final String PASS = ""; // your MySQL password if set
+```
+
+Do not change the database name.
+Each teammate uses their own MySQL username and password.
+
+---
+
+## 5. Build the Project
+
+In a terminal from the project root:
+
+```bash
+mvn clean compile
+```
+
+Expected output:
+`[INFO] BUILD SUCCESS`
+
+---
+
+## 6. Run the Application
+
+### IntelliJ IDEA
+
+1. Open the project folder.
+2. Wait for Maven dependencies to load.
+3. Right-click `App.java` → **Run 'App.main()'**.
+
+### Command Line
+
+```bash
+mvn exec:java -Dexec.mainClass="pizza.shop.App"
+```
+
+---
+
+## 7. Test the Connection
+
+Run this quick check inside `App.java`:
+
+```java
+try (Connection conn = DBConnection.getConnection()) {
+    System.out.println("Connected to " + conn.getCatalog());
+}
+```
+
+Expected output:
+`Connected to PizzaShop`
+
+---
+
+## 8. Troubleshooting
+
+| Problem                       | Solution                                                                |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| Unknown database 'PizzaShop'  | Run `pizza_schema.sql` again.                                           |
+| Access denied for user 'root' | Update credentials in `DBConnection.java`.                              |
+| Connection refused            | Start the MySQL80 service in Windows Services.                          |
+| Unknown column 'is_active'    | Run: `ALTER TABLE Customers ADD COLUMN is_active TINYINT(1) DEFAULT 1;` |
+| Maven not recognized          | Install via Chocolatey: `choco install maven -y`.                       |
+| JDK mismatch                  | Use JDK 17; verify `java -version`.                                     |
+
+---
+
+## 9. Team Standards
+
+* Keep the database name **PizzaShop**.
+* Do not commit personal MySQL passwords.
+* Update `pizza_schema.sql` whenever the schema changes.
+* Always pull latest changes before coding:
+
+  ```bash
+  git pull origin main
+  ```
+
+---
+
+## 10. Verification
+
+If setup is correct:
+
+* Running `mvn exec:java` starts the console app.
+* You can add and delete customers.
+* Data appears in the `PizzaShop.Customers` table in MySQL Workbench.
+
+---
+
+You can copy this file as-is into your repository root and share it with your teammates.
