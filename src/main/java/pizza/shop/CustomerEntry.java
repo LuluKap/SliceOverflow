@@ -140,6 +140,39 @@ public class CustomerEntry {
             if (!found) {
                 System.out.println("No active customers found.");
             }
+            
         }
+        //edit customers
+     private static void editCustomer(Connection conn, Scanner in) throws SQLException {
+        System.out.print("Enter customer phone number to edit: ");
+        String phone = in.nextLine().trim();
+
+        String check = "SELECT * FROM Customers WHERE phone = ? AND is_active = 1";
+        try (PreparedStatement verify = conn.prepareStatement(check)) {
+            verify.setString(1, phone);
+            ResultSet rs = verify.executeQuery();
+            if (!rs.next()) {
+                System.out.println("No active customer found with that phone number.");
+                return;
+            }
+        }
+
+        System.out.print("Enter new address: ");
+        String address = in.nextLine().trim();
+        System.out.print("Enter new card info: ");
+        String card = in.nextLine().trim();
+
+        String update = "UPDATE Customers SET address = ?, card_info = ? WHERE phone = ? AND is_active = 1";
+        try (PreparedStatement ps = conn.prepareStatement(update)) {
+            ps.setString(1, address);
+            ps.setString(2, card);
+            ps.setString(3, phone);
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                System.out.println("Customer information updated successfully!");
+            } else {
+                System.out.println("No changes made.");}
+            }
+         }
     }
 }
