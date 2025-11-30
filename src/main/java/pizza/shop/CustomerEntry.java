@@ -18,7 +18,8 @@ public class CustomerEntry {
                 System.out.println("2. Delete My Account (Customer)");
                 System.out.println("3. Delete Customer (Employee Only)");
                 System.out.println("4. List Active Customers");
-                System.out.println("5. Exit");
+                System.out.println("5. Edit Customer");
+                System.out.println("6. Exit");
                 System.out.print("Choose an option: ");
 
                 int choice = Integer.parseInt(input.nextLine().trim());
@@ -37,8 +38,11 @@ public class CustomerEntry {
                         listActiveCustomers(conn);
                         break;
                     case 5:
-                        System.out.println("Goodbye!");
-                        return;
+                        editCustomer(conn, input);
+                        break;
+                    case 6:
+                        System.out.println("Exiting...");
+                    return;
                     default:
                         System.out.println("Invalid choice. Try again.");
                 }
@@ -122,7 +126,7 @@ public class CustomerEntry {
         }
     }
 
-    // Lists all active customers in the database
+        // Lists all active customers in the database
     private static void listActiveCustomers(Connection conn) throws SQLException {
         String sql = "SELECT customer_id, name, phone, address FROM Customers WHERE is_active = 1 ORDER BY name";
         try (PreparedStatement ps = conn.prepareStatement(sql);
@@ -140,20 +144,22 @@ public class CustomerEntry {
             if (!found) {
                 System.out.println("No active customers found.");
             }
-            
-        }
-        //edit customers
-     private static void editCustomer(Connection conn, Scanner in) throws SQLException {
+        } // ← closes try-with-resources
+    }     // ← closes listActiveCustomers
+
+    // Edit a customer's address/card by phone (employee or owner)
+    private static void editCustomer(Connection conn, Scanner in) throws SQLException {
         System.out.print("Enter customer phone number to edit: ");
         String phone = in.nextLine().trim();
 
         String check = "SELECT * FROM Customers WHERE phone = ? AND is_active = 1";
         try (PreparedStatement verify = conn.prepareStatement(check)) {
             verify.setString(1, phone);
-            ResultSet rs = verify.executeQuery();
-            if (!rs.next()) {
-                System.out.println("No active customer found with that phone number.");
-                return;
+            try (ResultSet rs = verify.executeQuery()) {
+                if (!rs.next()) {
+                    System.out.println("No active customer found with that phone number.");
+                    return;
+                }
             }
         }
 
@@ -171,8 +177,8 @@ public class CustomerEntry {
             if (rows > 0) {
                 System.out.println("Customer information updated successfully!");
             } else {
-                System.out.println("No changes made.");}
+                System.out.println("No changes made.");
             }
-         }
+        }
     }
-}
+} // ← final brace for class
