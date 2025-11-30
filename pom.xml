@@ -58,6 +58,13 @@
                 <mainClass>pizza.shop.queue.QueueConsole</mainClass>
               </configuration>
             </execution>
+            <execution>
+              <id>run-payment</id>
+              <goals><goal>java</goal></goals>
+              <configuration>
+                <mainClass>pizza.shop.payments.PaymentConsole</mainClass>
+              </configuration>
+            </execution>
           </executions>
         </plugin>
       </plugins>
