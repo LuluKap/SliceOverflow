@@ -1,8 +1,19 @@
-Here’s a clean teammate-only setup guide you can paste straight into your repo as **README-Setup.md** (no emojis, no fluff):
-
 ---
 
 # Team Setup Instructions – Slice Overflow System
+
+## UPDATE
+To run  sql in your code enter these into MySQL Workbench:
+
+SOURCE /path/to/sql/01-schema.sql;
+
+SOURCE /path/to/sql/02-triggers.sql;
+
+SOURCE /path/to/sql/03-seed.sql;
+
+OR
+
+copy contents of each sql and run it
 
 ## 1. Required Software
 
