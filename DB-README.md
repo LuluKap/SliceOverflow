@@ -3,7 +3,7 @@
 # Team Setup Instructions – Slice Overflow System
 
 ## UPDATE
-To run  sql in your code enter these into MySQL Workbench:
+To run  sql in your code enter these into MySQL Workbench -
 
 SOURCE /path/to/sql/01-schema.sql;
 
