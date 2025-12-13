@@ -1,11 +1,15 @@
 CREATE database PizzaShop;
 use PizzaShop;
    
- import java.util.Scanner;
+
+import java.io.Console;
+import java.util.Scanner;
 import java.util.ArrayList;
 public class Order {
     public static void main(String[] args) {
         ArrayList<String> record = new ArrayList<>();
+        ArrayList<String> pizza = new ArrayList<>();
+        ArrayList<Double> indD = new ArrayList<>();
         Scanner input = new Scanner(System.in);
         String Address;
         String City;
@@ -18,6 +22,9 @@ public class Order {
         int side = 0;
         int drink = 0;
         double sum;
+        Sides sides = new Sides(0, cost);
+        Custom custom = new Custom(0, 0, topping, cost);
+        drinks drin = new drinks(drink, cost);
         String username = null;
         String password = null;
         Login login = new Login(username, password);
@@ -54,7 +61,7 @@ public class Order {
             System.out.println(record);
             break;
         }
-        ArrayList<String> pizza = new ArrayList<>();
+        pizza = new ArrayList<>();
         double checkout = 0.00;
         int choice;
         while (true) {
@@ -77,68 +84,190 @@ public class Order {
                 case 1:
                     System.out.println("Large pepperoni pizza added to cart");
                     pizza.add("Large pepperoni");
+                    indD.add(15.98);
                     checkout = checkout + 15.98;
                     break;
                 case 2:
                     System.out.println("Large meat-Lovers pizza added to cart");
                     pizza.add("Large meat-Lovers");
+                    indD.add(19.99);
                     checkout = checkout + 19.99;
                     break;
                 case 3:
                     System.out.println("Large veggie pizza added to cart");
                     pizza.add("Large veggie");
+                    indD.add(19.99);
                     checkout = checkout + 19.99;
                     break;
                 case 4:
                     System.out.println("Large buffalo chicken pizza added to cart");
                     pizza.add("Large buffalo chicken");
+                    indD.add(19.99);
                     checkout = checkout + 19.99;
                     break;
                 case 5:
                     System.out.println("Large cheese pizza added to cart");
                     pizza.add("Large cheese");
+                    indD.add(13.79);
                     checkout = checkout + 13.79;
                     break;
 
                 case 6:
                     System.out.println("Large Hawaiian chicken pizza added to cart");
                     pizza.add("Large Hawaiian chicken");
+                    indD.add(19.99);
                     checkout = checkout + 19.99;
                     break;
                 case 7:
                     System.out.println("Large Pesto Margherita pizza added to cart");
                     pizza.add("Large Pesto Margherita");
+                    indD.add(19.99);
                     checkout = checkout + 19.99;
                     break;
                 case 8:
                     System.out.println("Large gluten free cheese pizza added to cart");
                     pizza.add("Large gluten free cheese");
+                    indD.add(12.99);
                     checkout = checkout + 12.99;
                     break;
                 case 9:
-                    Custom custom = new Custom(0, 0, topping,cost);
+                    custom = new Custom(0, 0, topping, cost);
                     custom.GetSize(size, cost);
                     custom.GetCrust(size, cost);
                     custom.toppings(topping, cost);
-                    System.out.println(custom.Getcsst());
                     break;
                 case 10:
-                    Sides sides = new Sides(0, cost);
-                    sides.side(side,cost);
-                    System.out.println(sides.Getcost());
+                    sides = new Sides(0, cost);
+                    sides.side(side, cost);
                     break;
                 case 11:
-                drinks drin = new drinks(drink,cost);
-                drin.drink(drink,cost);
+                    drin = new drinks(drink, cost);
+                    drin.drink(drink, cost);
             }
             if (choice == 12) {
-                System.out.println("Checkout: ");
-                break;
+                sum = drin.Getcsst() + sides.Getcost() + custom.Getcsst() + checkout;
+                for (int i = 0; i < pizza.size(); i++) {
+                    for (int q = 0; q < indD.size(); q++) {
+                        if (i == q) {
+                            System.out.printf("%s..........$%.2f", pizza.get(i), indD.get(i));
+                            System.out.println();
+
+                            break;
+                        }
+                    }
+                }
+                custom.Setorder();
+                sides.Setorder();
+                drin.Setorder();
+                double taxes = 2.38;
+                sum = sum + taxes;
+                System.out.printf("Taxes..........$%.2f",taxes );
+                System.out.println();
+                System.out.println("___________________");
+                System.out.printf("TOTAL..........$%.2f",sum);
+                System.out.println();
+                String name;
+                int card;
+                int month;
+                int zip;
+                System.out.println("Enter card information");
+                System.out.println("Enter name on card");
+                name = input.nextLine();
+                System.out.print("Enter card number");
+                card = input.nextInt();
+                System.out.println("Exp date");
+                month = input.nextInt();
+                System.out.println("zipcode");
+                zip = input.nextInt();
+                System.out.println(name);
+                System.out.println(card);
+                System.out.println(month + " , " + zip);
+                System.out.println();
+                System.out.println("Press I to confirm order");
+                String press = input.next();
+                if (press.equalsIgnoreCase("I")) {
+                    System.out.println("Order is on the way, Enjoy! :)");
+                    System.exit(0);
+                }else{
+                    System.out.println("Invalid entry - order cancelled");
+                }
+                }
+
             }
         }
     }
-}
+                   import java.util.Scanner;
 import java.util.ArrayList;
+public class Sides {
+    Scanner input = new Scanner(System.in);
+
+    private int sides;
+    private double cost;
+    ArrayList<String> sideO = new ArrayList<>();
+    ArrayList<Double> price = new ArrayList<>();
+
+    public Sides(int sides, double cost) {
+        this.sides = sides;
+        this.cost = cost;
+    }
+
+    void Setcost(double cost) {
+        this.cost += cost;
+    }
+
+    double Getcost() {
+        return this.cost;
+    }
+
+    public void side(int side, double cost) {
+        sideO = new ArrayList<>();
+        price = new ArrayList<>();
+        double total = 0.00;
+        while (true) {
+
+            System.out.println("What sides would you like with your pizza?");
+            System.out.println("1: 3 piece cheese sticks - $2.99");
+            System.out.println("2: 6 piece wings - $4.00");
+            System.out.println("3: 10 piece wings- $6.30");
+            System.out.println("4: Done");
+            side = input.nextInt();
+            if (side == 1) {
+                sideO.add("3 piece cheese sticks");
+               total = 2.99;
+                cost = 2.99;
+
+            } else if (side == 2) {
+                sideO.add("6 piece wings");
+                total = 4.00;
+                cost = 4.00;
+            } else if(side == 3) {
+                sideO.add("10 piece wings");
+                total = 6.30;
+                cost = 6.30;
+
+            }
+            else{
+                break;
+            }
+            Setcost(cost);
+            Getcost();
+            price.add(total);
+        }
+    }
+    void Setorder(){
+        for (int i = 0; i < sideO.size();i++) {
+            for (int q = 0; q < price.size(); q++) {
+                if(i == q) {
+                    System.out.printf("%s..........$%.2f", sideO.get(i),price.get(i));
+                    System.out.println();
+                }
+            }
+        }
+            }
+
+
+        }
+       import java.util.ArrayList;
 import java.util.Scanner;
 public class Login {
     Scanner input = new Scanner(System.in);
@@ -172,33 +301,23 @@ public class Login {
 
         }
     }
-
-
-
-
-
-
-
-
-    public void Denie(String username, String password) {
-        System.out.println("Invalid username or password, press 'Q' to try again or press 'I' to create account");
-        String hit = input.next();
-        if(hit.equalsIgnoreCase("I")){
-            CreateAccount account = new CreateAccount(username,password);
-           account.login(username,password);
-        } if(hit.equalsIgnoreCase("Q")){
-            login(username,password);
-        }
-
-    }
-           import java.util.Scanner;
+import java.util.Scanner;
+import java.util.ArrayList;
 public class drinks {
     Scanner input = new Scanner(System.in);
+        private ArrayList<String> Baverage;
+        private ArrayList<String> sizes;
+        private ArrayList<Double> D = new ArrayList<>();
+
+        double c;
     private int drink;
     private double cost;
     public drinks(int drink, double cost){
         this.drink = drink;
         this.cost = cost;
+    }
+    void indprice(double c){
+        this.c = c;
     }
     void Setcost(double cost) {
         this.cost += cost;
@@ -208,6 +327,10 @@ public class drinks {
         return this.cost;
     }
     public void drink(int drinks, double cost) {
+        Baverage = new ArrayList<>();
+        sizes = new ArrayList<>();
+         D = new ArrayList<>();
+         double total = 0.00;
         while (true) {
             System.out.println("What drink would you like with your pizza?");
             System.out.println("1: Water - $1.00");
@@ -218,9 +341,35 @@ public class drinks {
             System.out.println("6: Done");
             drinks = input.nextInt();
             if (drinks == 1) {
+                Baverage.add("Water");
                 cost = 1.00;
-            } else {
+                total = 1.00;
+
+
+
+            }
+            else if(drinks == 2){
+                Baverage.add("Coca-cola");
                 cost = 1.38;
+                total = 1.38;
+
+            }
+            else if(drinks == 3) {
+                Baverage.add("Sprite");
+                cost = 1.38;
+                total = 1.38;
+
+            }
+            else if(drinks == 4) {
+                Baverage.add("Fanta");
+                cost = 1.38;
+                total = 1.38;
+
+            }
+            else if(drinks == 5) {
+                Baverage.add("Dr pepper");
+                cost = 1.38;
+                total = 1.38;
 
             }
             if(drinks == 6){
@@ -236,22 +385,50 @@ public class drinks {
             System.out.println("3: Large - $1.00");
             int size = input.nextInt();
             if (size == 1) {
-                cost = 0.10;
+                sizes.add("small");
+                cost += 0.10;
+                total += 0.10;
+
             } else if (size == 2) {
-                cost = 0.48;
+                sizes.add("Medium");
+                cost += 0.48;
+                total += 0.48;
+
             }else {
-                cost = 1.00;
+                sizes.add("Large");
+                cost += 1.00;
+                total += 1.00;
+
             }
             Setcost(cost);
             Getcsst();
-        }
+            D.add(total);
 
         }
+
+
+        }
+    void Setorder(){
+        for (int i = 0; i < Baverage.size();i++) {
+            for (int q = 0; q < sizes.size();q++)  {
+                if(i == q) {
+                    System.out.printf("%s %s..........$%.2f", sizes.get(q), Baverage.get(i), D.get(i));
+                    System.out.println();
+                }
+            }
+
+
+        }
+
     }
+    }
+       import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Custom {
     Scanner input = new Scanner(System.in);
+    ArrayList<String> Sizes = new ArrayList<>();
+    ArrayList<String> top = new ArrayList<>();
     private int size;
     private int crust;
     private int toppings;
@@ -275,6 +452,7 @@ public class Custom {
     }
 
     public void GetSize(int size, double cost) {
+        Sizes = new ArrayList<>();
         System.out.println("What size pizza would you like?");
         System.out.println("1: Extra large - $9.99");
         System.out.println("2:Large - $6.99");
@@ -282,15 +460,18 @@ public class Custom {
         System.out.println("4:Personal pan - $5.30");
         size = input.nextInt();
         if (size == 1) {
-
             cost = 9.99;
+            Sizes.add("Extra large");
 
         } else if (size == 2) {
             cost = 6.99;
+            Sizes.add("Large");
         } else if (size == 3){
             cost = 5.50;
+            Sizes.add("Medium");
         } else if (size == 4){
             cost = 5.30;
+            Sizes.add("Personal pan");
 
         }
         Setcost(cost);
@@ -303,8 +484,9 @@ public class Custom {
 
 
     public void GetCrust(int crust, double cost) {
+        top = new ArrayList<>();
         System.out.println("What kind of crust do you want?");
-        System.out.println("1: Thim and crispy - $2.50");
+        System.out.println("1: Thin and crispy - $2.50");
         System.out.println("2: Hand tossed  -  $3.00");
         System.out.println("3: Original pan  -  $3.75");
         System.out.println("4: Double stuffed  -  $4.50");
@@ -312,12 +494,16 @@ public class Custom {
         crust = input.nextInt();
         if (crust == 1) {
             cost = 2.50;
+            top.add("thin and crispy");
         } else if (crust == 2) {
             cost = 3.00;
+            top.add("hand tossed");
         } else if (crust == 3) {
             cost = 3.75;
+            top.add("original pan");
         } else if (crust == 4) {
             cost = 4.50;
+            top.add("double stuffed");
         }
         Setcost(cost);
         Getcsst();
@@ -336,7 +522,7 @@ public class Custom {
             System.out.println("6:   Pineapple - $3.50");
             System.out.println("7:   Mushrooms - $0.40");
             System.out.println("8:   Sausage - $0.75 ");
-            System.out.println("10:   Done ");
+            System.out.println("10:   Done");
             toppings = input.nextInt();
             if (toppings == 1) {
                 cost = 1.00;
@@ -364,8 +550,41 @@ public class Custom {
     }
 
 }
+    void Setorder(){
+        for (int i = 0; i < top.size();i++) {
+            for (int q = 0; q < Sizes.size();q++)  {
+                    System.out.printf("%s %s..........$%.2f", Sizes.get(q), top.get(i),Getcsst());
+                    System.out.println();
+                }
+
+
+
+        }
+
+    }
 }
-import java.util.Scanner;
+
+
+
+
+
+
+
+    public void Denie(String username, String password) {
+        System.out.println("Invalid username or password, press 'Q' to try again or press 'I' to create account");
+        String hit = input.next();
+        if(hit.equalsIgnoreCase("I")){
+            CreateAccount account = new CreateAccount(username,password);
+           account.login(username,password);
+        } if(hit.equalsIgnoreCase("Q")){
+            login(username,password);
+        }
+
+    }
+
+
+}
+           import java.util.Scanner;
 public class CreateAccount extends Login {
 
     public CreateAccount(String username, String password) {
@@ -384,49 +603,8 @@ public class CreateAccount extends Login {
         log.login(username,password);
     }
 }
-   import java.util.Scanner;
-public class Sides {
-    Scanner input = new Scanner(System.in);
-    private String sticks = "Cheese sticks";
-    private String sixwings = "6 piece wings";
-    private String tenwings = "10 piece wings";
-    private int sides;
-    private double cost;
 
-    public Sides(int sides, double cost) {
-        this.sides = sides;
-        this.cost = cost;
-    }
-
-    void Setcost(double cost) {
-        this.cost += cost;
-    }
-
-    double Getcost() {
-        return this.cost;
-    }
-
-    public void side(int side, double cost) {
-        while (true) {
-            System.out.println("What sides would you like with your pizza?");
-            System.out.println("1: 3 piece" + sticks + " - $2.99");
-            System.out.println("2: 6 piece wings - $4.00");
-            System.out.println("3: 10 piece wings- $6.30");
-            side = input.nextInt();
-            if (side == 1) {
-                cost = 2.99;
-
-            } else if (side == 2) {
-                cost = 4.00;
-            } else {
-                cost = 6.30;
-
-            }
-            Setcost(cost);
-            Getcost();
-        }
-    }
-}
+      
 
            
 
@@ -448,6 +626,7 @@ values ('John Doe', '555-1234', '123 Main St', 'Visa 1234'),
 ('Diana Prince', '555-4444', '654 Birch Blvd', 'Discover 1357'),
 
 ('Ethan Hunt', '555-5555', '159 Spruce Ln', 'Visa 9876');
+
 
 
 
