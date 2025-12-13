@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.PaymentController"
+      alignment="CENTER"
+      spacing="15">
+
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <Label
+            text="Your order is being prepared!"
+            style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+    <ListView fx:id="orderList"
+              prefWidth="700"
+              prefHeight="400"/>
+
+    <Label fx:id="totalLabel"
+           style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <Button text="Return Home"
+            onAction="#goHome"
+            prefWidth="150"/>
+
+</VBox>
