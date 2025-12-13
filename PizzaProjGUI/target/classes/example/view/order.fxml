@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.OrderController"
+            prefWidth="1024"
+            prefHeight="768">
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox spacing="20">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Label text="Ultra Pizza"
+                   style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label text="Total:"/>
+            <Label fx:id="totalLabel" text="\$0.00"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER -->
+    <center>
+        <HBox spacing="30">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- LEFT MENU (SCROLLABLE) -->
+            <ScrollPane fitToWidth="true" prefWidth="380">
+                <content>
+                    <VBox spacing="20">
+
+                        <!-- CUSTOM PIZZA -->
+                        <VBox spacing="8">
+                            <Label text="Build Your Own Pizza"
+                                   style="-fx-font-weight: bold;"/>
+
+                            <ComboBox fx:id="pizzaSizeBox" promptText="Size"/>
+                            <ComboBox fx:id="pizzaCrustBox" promptText="Crust"/>
+
+                            <Label text="Toppings (max 4):"/>
+
+                            <CheckBox fx:id="pepperoniTopping" text="Pepperoni"/>
+                            <CheckBox fx:id="sausageTopping" text="Sausage"/>
+                            <CheckBox fx:id="mushroomTopping" text="Mushrooms"/>
+                            <CheckBox fx:id="onionTopping" text="Onions"/>
+                            <CheckBox fx:id="oliveTopping" text="Olives"/>
+                            <CheckBox fx:id="pepperTopping" text="Green Peppers"/>
+
+                            <Button text="Add Custom Pizza"
+                                    onAction="#addCustomPizza"/>
+                        </VBox>
+
+                        <!-- PRESET PIZZAS -->
+                        <VBox spacing="8">
+                            <Label text="Preset Pizzas"
+                                   style="-fx-font-weight: bold;"/>
+
+                            <Button text="Cheese" onAction="#addCheese"/>
+                            <Button text="Pepperoni" onAction="#addPepperoni"/>
+                            <Button text="Margherita" onAction="#addMargherita"/>
+                            <Button text="Meat Lover's" onAction="#addMeatLovers"/>
+                            <Button text="Mushroom" onAction="#addMushroom"/>
+                        </VBox>
+
+                        <!-- SIDES -->
+                        <VBox spacing="8">
+                            <Label text="Sides"
+                                   style="-fx-font-weight: bold;"/>
+
+                            <Button text="Breadsticks" onAction="#addBreadsticks"/>
+                            <Button text="Mozzarella Sticks" onAction="#addMozzarella"/>
+                            <Button text="Onion Rings" onAction="#addOnionRings"/>
+                            <Button text="Pretzel Bites" onAction="#addPretzels"/>
+                        </VBox>
+
+                        <!-- DRINKS -->
+                        <VBox spacing="8">
+                            <Label text="Drinks"
+                                   style="-fx-font-weight: bold;"/>
+
+                            <ComboBox fx:id="drinkTypeBox" promptText="Drink"/>
+                            <ComboBox fx:id="drinkSizeBox" promptText="Size"/>
+
+                            <Button text="Add Drink" onAction="#addDrink"/>
+                        </VBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+
+            <!-- RIGHT SIDE -->
+            <VBox spacing="20" prefWidth="300">
+
+                <!-- GRANDE BOX -->
+                <VBox spacing="6"
+                      style="-fx-border-color: black; -fx-padding: 10;">
+                    <Label text="Pizza Grande Box"
+                           style="-fx-font-weight: bold;"/>
+                    <Label text="• 2 Regular Pizzas"/>
+                    <Label text="• Breadsticks"/>
+                    <Label text="• 6-Count Wings"/>
+                    <Label text="\$14.99"/>
+
+                    <Button text="Add Pizza Grande Box"
+                            onAction="#addGrandeBox"/>
+                </VBox>
+
+                <!-- ORDER SUMMARY -->
+                <VBox spacing="15">
+                    <Label text="Your Order"
+                           style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+                    <ListView fx:id="orderList"/>
+
+                    <Button text="Checkout"
+                            style="-fx-background-color: yellow; -fx-font-weight: bold;"
+                            onAction="#goToCheckout"/>
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>
