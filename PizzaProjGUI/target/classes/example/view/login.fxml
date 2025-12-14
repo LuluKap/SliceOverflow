@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.LoginController"
+            prefWidth="1024"
+            prefHeight="768">
+
+    <!-- TOP NAV -->
+    <top>
+        <HBox spacing="20"
+              alignment="CENTER_LEFT"
+              style="-fx-background-color: #c62828;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="Ultra Pizza"
+                   style="-fx-text-fill: white; -fx-font-size: 20px;"/>
+
+            <Button text="Home"
+                    onAction="#goHome"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label text="\$0.00"
+                   style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <VBox spacing="20"
+              alignment="TOP_LEFT">
+            <padding>
+                <Insets top="40" left="60"/>
+            </padding>
+
+            <Label text="Sign-in"
+                   style="-fx-font-size: 36px; -fx-font-weight: bold;"/>
+
+            <HBox spacing="5">
+                <Label text="Don't have an account?"/>
+                <Hyperlink text="Sign Up"
+                           onAction="#goToSignUp"/>
+            </HBox>
+
+            <VBox spacing="10">
+                <Label text="E-mail Address:"/>
+                <TextField fx:id="emailField" prefWidth="300"/>
+
+                <Label text="Password:"/>
+                <PasswordField prefWidth="300"/>
+            </VBox>
+
+            <Button text="Sign in"
+                    prefWidth="140"
+                    onAction="#logIn"
+                    style="-fx-background-color: #c62828; -fx-text-fill: white;"/>
+        </VBox>
+    </center>
+
+</BorderPane>
